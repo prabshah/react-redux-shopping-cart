@@ -1,29 +1,44 @@
 const isInt = num => num % 1 === 0;
 
-export const formatCurrency = amount => {
-  const isInteger = isInt(amount);
+export const formatCurrency = currency => {
+  const isInteger = isInt(currency);
 
   if (isInteger) {
-    return `£${amount}.00`;
+    return `£${currency}.00`;
   } else {
-    return `£${amount.toFixed(2)}`;
+    return `£${currency.toFixed(2)}`;
   }
 };
 
-export const calculateDisc = type => {
-  let amount = 0;
+export const calculateDiscount = type => {
+  let discount = 0;
 
   if (type === "default") {
-    amount = 5;
+    discount = 5;
   } else if (type === "overFifty") {
-    amount = 10;
-  } else if (type === "overSeventyFive") {
-    amount = 15;
+    discount = 10;
+  } else {
+    discount = 15;
   }
-  return amount;
+  return discount;
 };
 
-export const checkValue = (arr, valueOne, valueTwo) => {
+export const getCartTotal = (data = []) => {
+  let cartTotal = 0;
+  data.forEach(item => {
+    cartTotal = cartTotal + item.price;
+  });
+  return cartTotal;
+};
+
+export const handleNegativeNum = num => {
+  if (num < 0) {
+    return 0;
+  }
+  return num;
+};
+
+export const findValueInArray = (arr, valueOne, valueTwo) => {
   return arr.some(el => {
     return el.category === valueOne || el.category === valueTwo;
   });

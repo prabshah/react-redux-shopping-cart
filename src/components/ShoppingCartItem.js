@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 import { formatCurrency } from "../utilities/helperFunctions";
 
 export default function ShoppingCartItem({
-  id,
   name,
   category,
   price,
@@ -12,21 +11,21 @@ export default function ShoppingCartItem({
 }) {
   return (
     <Fragment>
-      <td>
+      <td className="border-right">
         {<b>{name}</b>}
         {<br />}
         {<small>{category}</small>}
       </td>
-      <td>{id}</td>
-      <td>{formatCurrency(price)}</td>
+      <td>{1}</td>
+      <td className="border-left">{formatCurrency(price)}</td>
       <td role="button" className="border" onClick={removeItem}>{`X`}</td>
     </Fragment>
   );
 }
 
 ShoppingCartItem.propTypes = {
-  id: PropTypes.number,
   name: PropTypes.string,
+  category: PropTypes.string,
   price: PropTypes.number,
   removeItem: PropTypes.func
 };

@@ -7,23 +7,25 @@ import ShoppingCartItem from "./ShoppingCartItem";
 import DiscountCard from "./DiscountCard";
 import categories from "../utilities/categoryDict";
 import {
-  calculateTotal,
   formatCurrency,
-  checkValue
+  findValueInArray,
+  getCartTotal,
+  handleNegativeNum
 } from "../utilities/helperFunctions";
 
 const ShoppingCart = props => {
   const { cartList, removeFromCart, applyDiscount, total = 0 } = props;
   const cartItemCount = cartList.length > 0;
-  const isTotalOverFifty = cartItemCount && total > 50;
-  const isFootwear = checkValue(
+  const cartTotal = getCartTotal(cartList);
+  const isTotalOverFifty = cartItemCount && cartTotal > 50;
+  const isFootwear = findValueInArray(
     cartList,
     categories.MEN_FOOTWEAR,
     categories.WOMEN_FOOTWEAR
   );
 
   const isFootwearAndOverSeventyFive =
-    cartItemCount && isFootwear && total > 75;
+    cartItemCount && isFootwear && cartTotal > 75;
 
   const cartItems = cartItemCount ? (
     cartList.map((cartItem, index) => {
@@ -53,7 +55,7 @@ const ShoppingCart = props => {
         <thead>
           <tr>
             <th scope="col">Product</th>
-            <th scope="col">ID</th>
+            <th scope="col">Quantity</th>
             <th scope="col">Price</th>
             <th scope="col">Remove</th>
           </tr>
@@ -61,7 +63,7 @@ const ShoppingCart = props => {
         <tbody>{cartItems}</tbody>
       </table>
       <div className="row text-center p-3 font-weight-bold lead">{`Total Amount: ${formatCurrency(
-        total
+        handleNegativeNum(total)
       )}`}</div>
 
       {cartItemCount && (
@@ -92,7 +94,6 @@ const ShoppingCart = props => {
 
 export default connect(
   state => ({
-    inventory: state.inventory,
     cartList: state.cartList,
     total: state.total
   }),
@@ -104,8 +105,7 @@ export default connect(
 
 ShoppingCart.propTypes = {
   cartList: PropTypes.array,
+  total: PropTypes.number,
   removeFromCart: PropTypes.func,
-  discount: PropTypes.number,
-  discountType: PropTypes.string,
-  toggleDiscount: PropTypes.func
+  applyDiscount: PropTypes.func
 };

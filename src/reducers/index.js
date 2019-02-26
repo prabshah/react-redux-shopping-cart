@@ -7,15 +7,13 @@ import {
 } from "../actions/constants";
 import {
   updateStockOnCartChange,
-  calculateDisc
+  calculateDiscount
 } from "../utilities/helperFunctions";
 
 const initialState = {
   inventory: data,
   cartList: [],
-  discountType: "",
-  total: 0,
-  discount: 0
+  total: 0
 };
 
 export default (state = initialState, action) => {
@@ -47,17 +45,17 @@ export default (state = initialState, action) => {
           itemRemoved[0].id,
           "increase"
         ),
-        total: state.total - itemRemoved[0].price
+        total: cartList.length > 0 ? state.total - itemRemoved[0].price : 0
       };
     case APPLY_DISCOUNT:
       return {
         ...state,
-        total: state.total - calculateDisc(action.payload)
+        total: state.total - calculateDiscount(action.payload)
       };
     case REMOVE_DISCOUNT:
       return {
         ...state,
-        total: state.total + calculateDisc(action.payload)
+        total: state.total + calculateDiscount(action.payload)
       };
     default:
       return state;

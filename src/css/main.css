@@ -1,3 +1,7 @@
 td[role="button"] {
   cursor: pointer;
 }
+
+.card-item > div {
+  min-height: 300px;
+}
