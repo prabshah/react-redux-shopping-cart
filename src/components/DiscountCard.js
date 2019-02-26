@@ -1,7 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import DiscountLabel from "./DiscountLabel";
 
-export default function DiscountCard({ onChange, labelText }) {
+export default function DiscountCard({ toggleDiscount, labelText }) {
   return (
     <div className="form-group border-top pt-3">
       <div className="form-check">
@@ -9,10 +11,15 @@ export default function DiscountCard({ onChange, labelText }) {
           className="form-check-input"
           type="checkbox"
           id="gridCheck"
-          onChange={onChange}
+          onChange={toggleDiscount}
         />
         <DiscountLabel text={labelText} />
       </div>
     </div>
   );
 }
+
+DiscountCard.propTypes = {
+  onChange: PropTypes.func,
+  labelText: PropTypes.string
+};

@@ -11,3 +11,20 @@ export const removeItemFromCart = index => {
     payload: index
   };
 };
+
+export const toggleDiscount = (event, discountType) => {
+  const checked = event.target.checked;
+  if (checked) {
+    return {
+      type: "APPLY_DISCOUNT",
+      payload: discountType
+    };
+  }
+
+  if (!checked) {
+    return {
+      type: "REMOVE_DISCOUNT",
+      payload: discountType
+    };
+  }
+};

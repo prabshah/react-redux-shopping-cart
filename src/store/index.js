@@ -1,5 +1,5 @@
 import { createStore } from "redux";
 
-import { productReducer } from "../reducers";
+import reducer from "../reducers";
 
-export default createStore(productReducer);
+export default createStore(reducer);

@@ -10,22 +10,17 @@ export const formatCurrency = amount => {
   }
 };
 
-export const calculateTotal = (data = [], discount = 0) => {
-  const dataLength = data.length > 0;
+export const calculateDisc = type => {
+  let amount = 0;
 
-  if (dataLength) {
-    let total = 0;
-
-    data.forEach(item => {
-      const { price } = item;
-
-      total = total + price;
-    });
-
-    return total - discount;
-  } else {
-    return 0;
+  if (type === "default") {
+    amount = 5;
+  } else if (type === "overFifty") {
+    amount = 10;
+  } else if (type === "overSeventyFive") {
+    amount = 15;
   }
+  return amount;
 };
 
 export const checkValue = (arr, valueOne, valueTwo) => {

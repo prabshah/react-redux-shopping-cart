@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 import { addItemToCart } from "../actions";
@@ -47,3 +48,8 @@ export default connect(
     addToCart: item => dispatch(addItemToCart(item))
   })
 )(ProductCards);
+
+ProductCards.propTypes = {
+  inventory: PropTypes.array.isRequired,
+  addToCart: PropTypes.func
+};

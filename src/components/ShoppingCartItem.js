@@ -1,4 +1,5 @@
 import React, { Fragment } from "react";
+import PropTypes from "prop-types";
 
 import { formatCurrency } from "../utilities/helperFunctions";
 
@@ -22,3 +23,10 @@ export default function ShoppingCartItem({
     </Fragment>
   );
 }
+
+ShoppingCartItem.propTypes = {
+  id: PropTypes.number,
+  name: PropTypes.string,
+  price: PropTypes.number,
+  removeItem: PropTypes.func
+};

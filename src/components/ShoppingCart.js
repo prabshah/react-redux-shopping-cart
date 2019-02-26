@@ -1,36 +1,19 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
-import { removeItemFromCart } from "../actions";
-import categories from "../utilities/categoryDict";
+import { removeItemFromCart, toggleDiscount } from "../actions";
 import ShoppingCartItem from "./ShoppingCartItem";
+import DiscountCard from "./DiscountCard";
+import categories from "../utilities/categoryDict";
 import {
   calculateTotal,
   formatCurrency,
   checkValue
 } from "../utilities/helperFunctions";
-import DiscountCard from "./DiscountCard";
 
 const ShoppingCart = props => {
-  const {
-    cartList,
-    removeFromCart,
-    discount,
-    discountType,
-    applyDiscount
-  } = props;
-
-  let total = calculateTotal(cartList);
-
-  if (discount && discountType === "default") {
-    total = total - 5;
-  }
-
-  if (discount && discountType === "overFifty") {
-    total = total - 10;
-  }
-
-  //Calculate the total according to the discount applied
+  const { cartList, removeFromCart, applyDiscount, total = 0 } = props;
   const cartItemCount = cartList.length > 0;
   const isTotalOverFifty = cartItemCount && total > 50;
   const isFootwear = checkValue(
@@ -43,20 +26,24 @@ const ShoppingCart = props => {
     cartItemCount && isFootwear && total > 75;
 
   const cartItems = cartItemCount ? (
-    cartList.map((listItem, index) => {
+    cartList.map((cartItem, index) => {
       return (
         <tr key={index}>
           <ShoppingCartItem
-            {...listItem}
+            {...cartItem}
             removeItem={() => removeFromCart(index)}
           />
         </tr>
       );
     })
   ) : (
-    <p className="lead p-4 mt-3 text-left">
-      Your shopping cart is empty! Get shopping....
-    </p>
+    <tr>
+      <td>
+        <p className="lead p-4 mt-3 text-left">
+          Your shopping cart is empty! Get shopping....
+        </p>
+      </td>
+    </tr>
   );
 
   return (
@@ -79,22 +66,24 @@ const ShoppingCart = props => {
 
       {cartItemCount && (
         <DiscountCard
-          onChange={() => applyDiscount()}
+          toggleDiscount={event => applyDiscount(event, "default")}
           labelText="Apply £5 Discount"
         />
       )}
 
       {isTotalOverFifty && (
         <DiscountCard
-          onChange={() => applyDiscount("overFifty")}
+          toggleDiscount={event => applyDiscount(event, "overFifty")}
           labelText=" Apply £10 Discount - Over Fifty Spend Reward"
         />
       )}
       {isFootwearAndOverSeventyFive && (
         <DiscountCard
-          onChange={() => applyDiscount("overSeventyFive")}
+          toggleDiscount={event => applyDiscount(event, "overSeventyFive")}
           labelText="Apply £15 Discount - Footwear and Over Seventy-Five Spend Reward"
-          labelText={`labelText="Apply £15 Discount - Footwear and Over Seventy-Five Spend Reward"`}
+          labelText={
+            "Apply £15 Discount - Footwear and Over Seventy-Five Spend Reward"
+          }
         />
       )}
     </div>
@@ -104,9 +93,19 @@ const ShoppingCart = props => {
 export default connect(
   state => ({
     inventory: state.inventory,
-    cartList: state.cartList
+    cartList: state.cartList,
+    total: state.total
   }),
   dispatch => ({
-    removeFromCart: item => dispatch(removeItemFromCart(item))
+    removeFromCart: item => dispatch(removeItemFromCart(item)),
+    applyDiscount: (event, type) => dispatch(toggleDiscount(event, type))
   })
 )(ShoppingCart);
+
+ShoppingCart.propTypes = {
+  cartList: PropTypes.array,
+  removeFromCart: PropTypes.func,
+  discount: PropTypes.number,
+  discountType: PropTypes.string,
+  toggleDiscount: PropTypes.func
+};
