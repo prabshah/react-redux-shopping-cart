@@ -93,14 +93,11 @@ const ShoppingCart = props => {
 };
 
 export default connect(
-  state => ({
-    cartList: state.cartList,
-    total: state.total
+  ({ cartList, total }) => ({
+    cartList,
+    total
   }),
-  dispatch => ({
-    removeFromCart: item => dispatch(removeItemFromCart(item)),
-    applyDiscount: (event, type) => dispatch(toggleDiscount(event, type))
-  })
+  { removeFromCart: removeItemFromCart, applyDiscount: toggleDiscount }
 )(ShoppingCart);
 
 ShoppingCart.propTypes = {

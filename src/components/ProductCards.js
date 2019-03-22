@@ -41,12 +41,10 @@ const ProductCards = ({ inventory, addToCart }) => {
 };
 
 export default connect(
-  state => ({
-    inventory: state.inventory
+  ({ inventory }) => ({
+    inventory
   }),
-  dispatch => ({
-    addToCart: item => dispatch(addItemToCart(item))
-  })
+  { addToCart: addItemToCart }
 )(ProductCards);
 
 ProductCards.propTypes = {
